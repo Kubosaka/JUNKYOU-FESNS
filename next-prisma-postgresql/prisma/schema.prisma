@@ -9,7 +9,16 @@ datasource db {
 }
 
 model users {
-  id         Int      @id @default(autoincrement())
+  id          Int     @default(autoincrement()) @id
   name       String
-  created_at DateTime @db.Timestamp(6)
+  created_at DateTime @default(now())
+}
+
+
+model posts {
+  id          Int     @default(autoincrement()) @id
+  context    String
+  user_id    Int
+  area_id    Int
+  created_at DateTime @default(now())
 }

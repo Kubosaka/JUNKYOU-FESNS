@@ -1,0 +1,25 @@
+import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+
+  try {
+    const post = await prisma.posts.create({
+      data: {
+        context: body.content,
+        user_id: 1,
+        area_id: 1,
+        created_at: new Date(),
+      },
+    });
+
+    return NextResponse.json(post, { status: 201 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Failed to create post" },
+      { status: 500 }
+    );
+  }
+}
