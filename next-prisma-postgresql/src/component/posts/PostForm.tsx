@@ -12,7 +12,12 @@ type Post = {
 };
 
 export default function PostForm() {
-  const { register, handleSubmit, reset } = useForm<Post>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isValid },
+  } = useForm<Post>();
 
   const onSubmit = async (data: Post) => {
     const response = await fetch("/api/posts", {
@@ -46,9 +51,9 @@ export default function PostForm() {
               id="content"
               label="本文"
               variant="outlined"
-              {...register("content")}
+              {...register("content", { required: true })}
             />
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" disabled={!isValid}>
               Contained
             </Button>
           </Stack>
