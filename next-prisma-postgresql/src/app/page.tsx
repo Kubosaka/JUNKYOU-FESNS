@@ -1,6 +1,12 @@
 import Image from "next/image";
 import prisma from "../lib/prisma";
 
+type User = {
+  id: number;
+  name: string;
+  created_at: Date;
+};
+
 export default async function Home() {
   const users = await prisma.users.findMany();
   console.log(users);
@@ -97,10 +103,9 @@ export default async function Home() {
             height={16}
           />
           Go to nextjs.org →
-          {users.map((user) => (
-            <div key={user.id}>{user.name}</div>
-          ))}
         </a>
+        {users &&
+          users.map((user: User) => <div key={user.id}>{user.name}</div>)}
       </footer>
     </div>
   );
