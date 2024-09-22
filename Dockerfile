@@ -2,9 +2,10 @@ FROM node:18-alpine
 
 RUN apk add g++ make py3-pip
 
-WORKDIR /app/
+COPY ./next-prisma-postgresql /app
 
-COPY ./next-prisma-postgresql /app/
+WORKDIR /app/next-prisma-postgresql
+
 RUN apk add --no-cache git
 RUN npm install -g npm@9.7.2
 RUN npm install -g node-gyp
