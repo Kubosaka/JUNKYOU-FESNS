@@ -12,7 +12,7 @@ type Post = {
 };
 
 export default function PostForm() {
-  const { register, handleSubmit } = useForm<Post>();
+  const { register, handleSubmit, reset } = useForm<Post>();
 
   const onSubmit = async (data: Post) => {
     const response = await fetch("/api/posts", {
@@ -23,8 +23,12 @@ export default function PostForm() {
       body: JSON.stringify(data),
     });
 
-    const resData = await response.json();
-    console.log(resData);
+    if (response.status === 201) {
+      window.alert("投稿しました");
+    } else {
+      window.alert("投稿に失敗しました");
+    }
+    reset();
   };
 
   return (
