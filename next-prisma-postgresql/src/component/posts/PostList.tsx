@@ -40,12 +40,12 @@ export default function PostList() {
         {data &&
           data.map((post: Post) => {
             return (
-              <>
-                <ListItem key={post.id}>
+              <Box key={post.id}>
+                <ListItem>
                   <ListItemText primary={post.context} />
                 </ListItem>
                 <Divider />
-              </>
+              </Box>
             );
           })}
       </List>

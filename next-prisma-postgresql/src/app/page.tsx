@@ -1,15 +1,19 @@
-import PostForm from "@/component/posts/PostForm";
-import PostList from "@/component/posts/PostList";
-import { Box } from "@mui/material";
-import { Suspense } from "react";
+import dynamic from "next/dynamic";
+import React from "react";
 
 export default async function Post() {
+  const Map = React.useMemo(
+    () =>
+      dynamic(() => import("@/component/posts/Map"), {
+        loading: () => <p>A map is loading</p>,
+        ssr: false,
+      }),
+    []
+  );
   return (
-    <Box>
-      <Suspense fallback={<div>Loading...</div>}>
-        <PostForm />
-        <PostList />
-      </Suspense>
-    </Box>
+    <>
+      <Map />
+      <a href="/posts">Posts</a>
+    </>
   );
 }
