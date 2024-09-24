@@ -15,6 +15,31 @@ import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { Box } from "@mui/material";
 
+import useSWR from "swr";
+import { fetcher } from "@/utils/fetcher";
+import Post from "@/app/posts/page";
+
+type Post = {
+  id: number;
+  context: string;
+  user_id: number;
+  area_id: number;
+  latitude: number;
+  longitude: number;
+  created_at: Date;
+};
+
+const usePostSwr = () => {
+  const { data, error } = useSWR(`/api/posts`, fetcher, {
+    refreshInterval: 1000,
+  });
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+};
+
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon.src,
   iconRetinaUrl: markerIcon2x.src,
@@ -26,6 +51,8 @@ const Map = () => {
     [37.42422, 138.77857], // 南西の座標
     [37.426754, 138.779855] // 北東の座標
   );
+
+  const { data } = usePostSwr();
 
   return (
     <Box
@@ -42,7 +69,6 @@ const Map = () => {
       <MapContainer
         center={[37.425491, 138.779047]}
         zoom={18}
-        minZoom={18}
         maxZoom={20}
         scrollWheelZoom={false}
         style={{ height: "50vh", width: "100%" }}
@@ -52,11 +78,14 @@ const Map = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <ImageOverlay url="/images/map.png" bounds={bounds} />
-        <Marker position={[37.425491, 138.779047]}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
+        {data &&
+          data.map((post: Post) => {
+            return (
+              <Marker key={post.id} position={[post.latitude, post.longitude]}>
+                <Popup>{post.context}</Popup>
+              </Marker>
+            );
+          })}
       </MapContainer>
     </Box>
   );

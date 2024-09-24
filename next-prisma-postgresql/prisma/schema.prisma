@@ -20,5 +20,7 @@ model posts {
   context    String
   user_id    Int
   area_id    Int
+  latitude   Float
+  longitude  Float
   created_at DateTime @default(now())
 }

@@ -8,7 +8,6 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 // import type { SWRConfiguration } from "swr";
 import { fetcher } from "@/utils/fetcher";
-import Post from "@/app/posts/page";
 
 type Post = {
   id: number;

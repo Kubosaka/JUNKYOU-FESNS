@@ -23,6 +23,8 @@ export async function POST(req: NextRequest) {
         context: body.content,
         user_id: 1,
         area_id: 1,
+        latitude: body.latitude,
+        longitude: body.longitude,
         created_at: new Date(),
       },
     });
